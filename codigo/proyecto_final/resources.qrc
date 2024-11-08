@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>public/images/genesis_tub.png</file>
+        <file>public/audios/main_theme.mp3</file>
+        <file>public/images/Homer_inicio_1.png</file>
+        <file>public/images/Homer_inicio_2.png</file>
+        <file>public/images/Homer_inicio_3.png</file>
+        <file>public/images/Homer_inicio_4.png</file>
+        <file>public/images/Homer_inicio_5.png</file>
+        <file>public/images/Homer_inicio_6.png</file>
+        <file>public/images/Homer_inicio_7.png</file>
+        <file>public/images/Homer_inicio_8.png</file>
+        <file>public/images/Homer_inicio_9.png</file>
+        <file>public/images/Homer_inicio_10.png</file>
+        <file>public/images/Homer_inicio_11.png</file>
+        <file>public/images/Homer_inicio_12.png</file>
+        <file>public/images/Homer_inicio_13.png</file>
+        <file>public/images/Homer_inicio_14.png</file>
+        <file>public/images/Homer_inicio_15.png</file>
+    </qresource>
+</RCC>
