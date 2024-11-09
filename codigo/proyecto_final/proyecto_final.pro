@@ -28,6 +28,9 @@ RESOURCES += \
 DISTFILES += \
     public/audios/main_theme.mp3 \
     public/images/Imagen_promocional_4F02.webp \
+    public/images/Stage_2_KrustyLand-removebg-preview.png \
+    public/images/evil_bart_map.png \
+    public/images/evil_bart_map_top_left.png \
     public/images/genesis_tub.png \
     public/images/map_base_KrustyLand.png \
     resources/audios/main_theme.mp3 \

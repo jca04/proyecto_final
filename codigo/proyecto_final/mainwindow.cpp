@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop); // ajustarlo arriba a la izquierda
 
 
-    this->scene = new QGraphicsScene(this);
+    this->scene = new QGraphicsScene(0, 0,screenSize.width(), screenSize.height());
     this->scene->setSceneRect(0, 0, ui->graphicsView->width(), ui->graphicsView->height());
 
     ui->graphicsView->setScene(scene);
@@ -53,8 +53,8 @@ MainWindow::~MainWindow()
     delete scene;
     delete theme_chapter;
     delete audio_output;
-    delete effectOpacity;
-    delete animation;
+    // delete effectOpacity;
+    // delete animation;
     delete ui;
 }
 
@@ -78,6 +78,14 @@ void MainWindow::changeScene(QString toScene){ // cambiar de escena
     // animation->start();
     // this->scene->clear(); //limpiar la escena actual
     scene->clear();
+
+    QList<QGraphicsItem*> items = scene->items();
+
+    foreach (QGraphicsItem* item, items) {
+        scene->removeItem(item);
+        delete item;
+    }
+
     if (toScene == "CHAPTER_ONE") evilBrotherScene();
 }
 
@@ -87,7 +95,7 @@ void MainWindow::homeScreen(){ // pantalla de inicio
     this->theme_chapter->setSource(QUrl("qrc:/public/audios/main_theme.mp3"));
     this->theme_chapter->setAudioOutput(audio_output);
 
-    this->theme_chapter->play();
+    // this->theme_chapter->play();
 
     QPushButton *button = new QPushButton("INICIAR"); // boton inicio
     QPushButton *buttonOut = new QPushButton("SALIR AL ESCRITORIO");
@@ -135,71 +143,80 @@ void MainWindow::homeScreen(){ // pantalla de inicio
     proxyOut->setPos((ui->graphicsView->width() - buttonOut->width()) / 2,
                      (ui->graphicsView->height() - buttonOut->height() + button->height() + 80) / 2);
 
-    connect(button, &QPushButton::clicked, [this, button, buttonOut](){ // funcion lambda para ejecucuon del evento click del boton
+    connect(button, &QPushButton::clicked, [this,proxy, proxyOut](){ // funcion lambda para ejecucuon del evento click del boton
         qDebug() << "boton clickeado";
 
-        delete button;
-        delete buttonOut;
+        scene->removeItem(proxy);
+        scene->removeItem(proxyOut);
 
         changeScene("CHAPTER_ONE");
     });
 
-    connect(buttonOut, &QPushButton::clicked, [button, buttonOut](){
+    connect(buttonOut, &QPushButton::clicked, [proxy, proxyOut, this](){
         qDebug() << "salir al escriotorio";
 
-        delete button;
-        delete buttonOut;
+        scene->removeItem(proxy);
+        scene->removeItem(proxyOut);
     });
 }
 
 //Capitulo uno diseño del nivel
 void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 
-    const int ADDSIZE = 40;
-    QPixmap leftTopMap = QPixmap(":/public/images/evil_bart_map_top_left.png");
-    QPixmap righTopMap = QPixmap(":/public/images/evil_bart_map_top_rigth.png");
-    QPixmap leftDownMap = QPixmap(":/public/images/evil_bart_map_down_left.png");
-    QPixmap rigthDownMap = QPixmap(":/public/images/evil_bart_map_down_rigth.png");
+    QPixmap mapEvilBart = QPixmap(":/public/images/evil_bart_map.png");
 
-    if (
-        leftTopMap.isNull() ||
-        righTopMap.isNull() ||
-        leftDownMap.isNull() ||
-        rigthDownMap.isNull()
-        ){
+    if (mapEvilBart.isNull()){
         qDebug() << "No se pudo cargar el mapa";
     }
 
-    leftTopMap = leftTopMap.scaled((scene->width() / 2) + ADDSIZE, scene->height() / 2, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    righTopMap = righTopMap.scaled((scene->width() / 2) + ADDSIZE, scene->height() / 2, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    leftDownMap = leftDownMap.scaled((scene->width() / 2) + ADDSIZE, scene->height() / 2, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    rigthDownMap = rigthDownMap.scaled((scene->width() / 2) + ADDSIZE, scene->height() / 2, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    mapEvilBart = mapEvilBart.scaled(scene->width(), scene->height(),  Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    background = new QGraphicsPixmapItem(mapEvilBart);
+    background->setPos(10,0);
+    scene->addItem(background);
 
-    imgLeftTop = new QGraphicsPixmapItem(leftTopMap);
-    imgleftDown = new QGraphicsPixmapItem(leftDownMap);
-    imgRigthDown = new QGraphicsPixmapItem(rigthDownMap);
-    imgRigthTop = new QGraphicsPixmapItem(righTopMap);
+    walls.append(scene->addRect(0, 160, 830, 10));
+    walls.append(scene->addRect(870, 200, 660, 10));
+    walls.append(scene->addRect(0, 160, 50, 200));
+    walls.append(scene->addRect(0, 350, 450, 10));
 
-    //mitad de la pantalla
-    int middleX = scene->width() / 2;
-    int middleY = scene->height() / 2;
+    QGraphicsRectItem* wallFall = scene->addRect(450, 350, 150, 10);
+    wallFall->setData(0, "wallFall");
+    walls.append(wallFall);
 
-    imgLeftTop->setPos(0, 0);
-    imgleftDown->setPos(0, middleY);
-    imgRigthTop->setPos(middleX, 0);
-    imgRigthDown->setPos(middleX, middleY);
+    //top Rigth walls
+    walls.append(scene->addRect(600, 350, 170, 10));
+    walls.append(scene->addRect(770, 360, 20, 10));
+    walls.append(scene->addRect(790, 370, 20, 10));
+    walls.append(scene->addRect(810, 380, 20, 10));
+    walls.append(scene->addRect(820, 390, 700, 10));
+    walls.append(scene->addRect(790, 370, 20, 10));
 
-    scene->addItem(imgLeftTop);
-    scene->addItem(imgleftDown);
-    scene->addItem(imgRigthTop);
-    scene->addItem(imgRigthDown);
+    //left down walls
+    walls.append(scene->addRect(450, 360, 10, 100));
+    walls.append(scene->addRect(460, 420, 20, 10));
+    walls.append(scene->addRect(470, 420, 10, 290));
+    walls.append(scene->addRect(220, 700, 250, 10));
+    walls.append(scene->addRect(220, 710, 10, 120));
+    walls.append(scene->addRect(230, 825, 380, 10));
+    walls.append(scene->addRect(550, 360, 10, 330));
+
+    QGraphicsRectItem* wallUpStarway = scene->addRect(550, 690, 10, 140);
+    wallUpStarway->setData(0, "wallStarway");
+    walls.append(wallUpStarway);
+    walls.append(scene->addRect(610, 690, 10, 140));
+
+    //rigth down walls
+    walls.append(scene->addRect(790, 570, 700, 10));
+    walls.append(scene->addRect(790, 760, 50, 10));
+    walls.append(scene->addRect(840, 750, 20, 10));
+    walls.append(scene->addRect(860, 740, 20, 10));
+    walls.append(scene->addRect(870, 730, 20, 10));
+    walls.append(scene->addRect(880, 720, 640, 10));
 
 
-
-    // background = new QGraphicsPixmapItem(mapEvilBart1);
-    // background->setPos(0,0);
-    // scene->addItem(background);
-
+    for (int i = 0; i < walls.size(); ++i) {
+        walls[i]->setBrush(Qt::darkGray);
+    }
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang

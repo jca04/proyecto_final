@@ -11,8 +11,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
-#include <QVector>
-
+#include <QScreen>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,12 +41,7 @@ private:
     QPropertyAnimation* animation;
     QGraphicsPixmapItem* background;
 
-
-    //nivel 1
-    QGraphicsPixmapItem* imgLeftTop;
-    QGraphicsPixmapItem* imgleftDown;
-    QGraphicsPixmapItem* imgRigthTop;
-    QGraphicsPixmapItem* imgRigthDown;
+    QVector<QGraphicsRectItem*> walls;
 
     void homeScreen();
     void evilBrotherScene();

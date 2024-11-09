@@ -2,9 +2,6 @@
     <qresource prefix="/">
         <file>public/audios/main_theme.mp3</file>
         <file>public/images/Stage_2_KrustyLand-removebg-preview.png</file>
-        <file>public/images/evil_bart_map_top_left.png</file>
-        <file>public/images/evil_bart_map_top_rigth.png</file>
-        <file>public/images/evil_bart_map_down_left.png</file>
-        <file>public/images/evil_bart_map_down_rigth.png</file>
+        <file>public/images/evil_bart_map.png</file>
     </qresource>
 </RCC>
