@@ -7,21 +7,21 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QSize screenSize = QGuiApplication::primaryScreen()->size();
-    ui->graphicsView->setFixedSize(screenSize.width(), screenSize.height());
-    ui->graphicsView->setBackgroundBrush(Qt::yellow);
     //configuraciones iniciales del graphicsview
+    QSize screenSize = QGuiApplication::primaryScreen()->size();      //tamaño de mi pantalla
+    ui->graphicsView->setFixedSize(screenSize.width(), screenSize.height());  //tamaño por defecto el QGraphicsView
+    ui->graphicsView->setBackgroundBrush(Qt::yellow);
     ui->graphicsView->setFrameShape(QFrame::NoFrame);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform); // suavizar bordes de las imagenes
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll horizontal
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll vertical
     ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop); // ajustarlo arriba a la izquierda
+    setCentralWidget(ui->graphicsView);
 
+    this->scene = new QGraphicsScene(0, 0,screenSize.width(), screenSize.height()); // crear nueva escena
+    this->scene->setSceneRect(0, 0, ui->graphicsView->width(), ui->graphicsView->height()); //definir el tamaño de la escena
 
-    this->scene = new QGraphicsScene(0, 0,screenSize.width(), screenSize.height());
-    this->scene->setSceneRect(0, 0, ui->graphicsView->width(), ui->graphicsView->height());
-
-    ui->graphicsView->setScene(scene);
+    ui->graphicsView->setScene(scene); // añadir la escena al graphicsview
 
     //volumen de la salida de audio
     this->audio_output = new QAudioOutput();
@@ -36,16 +36,15 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap initialBackground = QPixmap(":/public/images/Stage_2_KrustyLand-removebg-preview.png");
     initialBackground = initialBackground.scaled(scene->width(), scene->height(), Qt::IgnoreAspectRatio);
 
-
     // krustyLandBackgroubd = krustyLandBackgroubd.scaled(800, 600, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
     background = new QGraphicsPixmapItem(initialBackground);
      // background->setPos((ui->graphicsView->width() - initialBackground .width()) / 2,
      //                   (ui->graphicsView->height() - krustyLandBackgroubd.height()) / 2);
-
     scene->addItem(background);
-
     homeScreen();
+
+    player = new Player(scene); //trabajar el jugador como objeto QGraphicsItem
+    player->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -143,7 +142,7 @@ void MainWindow::homeScreen(){ // pantalla de inicio
     proxyOut->setPos((ui->graphicsView->width() - buttonOut->width()) / 2,
                      (ui->graphicsView->height() - buttonOut->height() + button->height() + 80) / 2);
 
-    connect(button, &QPushButton::clicked, [this,proxy, proxyOut](){ // funcion lambda para ejecucuon del evento click del boton
+    connect(button, &QPushButton::clicked, [this, proxy, proxyOut](){ // funcion lambda para ejecucuon del evento click del boton
         qDebug() << "boton clickeado";
 
         scene->removeItem(proxy);
@@ -160,7 +159,7 @@ void MainWindow::homeScreen(){ // pantalla de inicio
     });
 }
 
-//Capitulo uno diseño del nivel
+//DISEÑO DEL CAPITULO UNO: EL HERMANO MALVADO DE BART
 void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 
     QPixmap mapEvilBart = QPixmap(":/public/images/evil_bart_map.png");
@@ -170,10 +169,12 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     }
 
     mapEvilBart = mapEvilBart.scaled(scene->width(), scene->height(),  Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    background = new QGraphicsPixmapItem(mapEvilBart);
-    background->setPos(10,0);
+    background = new QGraphicsPixmapItem(mapEvilBart); // fondo de la escena
+    background->setPos(10,0); //posicion del fondo
     scene->addItem(background);
 
+    //QGraphicsRectItem para definir muros de la escena
+    //arriba a la izquierda
     walls.append(scene->addRect(0, 160, 830, 10));
     walls.append(scene->addRect(870, 200, 660, 10));
     walls.append(scene->addRect(0, 160, 50, 200));
@@ -183,7 +184,7 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     wallFall->setData(0, "wallFall");
     walls.append(wallFall);
 
-    //top Rigth walls
+    //arriba a la derecha
     walls.append(scene->addRect(600, 350, 170, 10));
     walls.append(scene->addRect(770, 360, 20, 10));
     walls.append(scene->addRect(790, 370, 20, 10));
@@ -191,7 +192,7 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     walls.append(scene->addRect(820, 390, 700, 10));
     walls.append(scene->addRect(790, 370, 20, 10));
 
-    //left down walls
+    //izquierda abajo
     walls.append(scene->addRect(450, 360, 10, 100));
     walls.append(scene->addRect(460, 420, 20, 10));
     walls.append(scene->addRect(470, 420, 10, 290));
@@ -205,7 +206,7 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     walls.append(wallUpStarway);
     walls.append(scene->addRect(610, 690, 10, 140));
 
-    //rigth down walls
+    //derecha abajo
     walls.append(scene->addRect(790, 570, 700, 10));
     walls.append(scene->addRect(790, 760, 50, 10));
     walls.append(scene->addRect(840, 750, 20, 10));
@@ -213,10 +214,11 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     walls.append(scene->addRect(870, 730, 20, 10));
     walls.append(scene->addRect(880, 720, 640, 10));
 
-
     for (int i = 0; i < walls.size(); ++i) {
         walls[i]->setBrush(Qt::darkGray);
     }
+
+    scene->addItem(player);
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
@@ -226,6 +228,8 @@ void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
 void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de microbios
 
 }
+
+//metodos protegidos
 
 void MainWindow::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
@@ -246,6 +250,11 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
 
     // ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 
+}
 
+
+//getters
+QGraphicsScene* MainWindow::getScene() const {
+    return this->scene;
 }
 

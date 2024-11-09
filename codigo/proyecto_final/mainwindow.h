@@ -12,6 +12,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
 #include <QScreen>
+#include "player.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,10 +23,9 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
-
+    QGraphicsScene* getScene() const;
     ~MainWindow();
 
 protected:
@@ -48,5 +48,6 @@ private:
     void kodosAndKand();
     void microbialCivilization();
 
+    Player* player;
 };
 #endif // MAINWINDOW_H
