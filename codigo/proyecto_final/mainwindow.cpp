@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //configuraciones iniciales del graphicsview
-    QSize screenSize = QGuiApplication::primaryScreen()->size();      //tamaño de mi pantalla
+    QSize screenSize = QGuiApplication::primaryScreen()->size();   //tamaño de mi pantalla
     ui->graphicsView->setFixedSize(screenSize.width(), screenSize.height());  //tamaño por defecto el QGraphicsView
     ui->graphicsView->setBackgroundBrush(Qt::yellow);
     ui->graphicsView->setFrameShape(QFrame::NoFrame);
@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll horizontal
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll vertical
     ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop); // ajustarlo arriba a la izquierda
+
     setCentralWidget(ui->graphicsView);
 
     this->scene = new QGraphicsScene(0, 0,screenSize.width(), screenSize.height()); // crear nueva escena
@@ -23,28 +24,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->graphicsView->setScene(scene); // añadir la escena al graphicsview
 
-    //volumen de la salida de audio
-    this->audio_output = new QAudioOutput();
+    this->audio_output = new QAudioOutput();  //volumen de la salida de audio
     this->audio_output->setVolume(1.0);
 
     //animaciones ============================
-
-    // effectOpacity = new QGraphicsOpacityEffect(ui->graphicsView); // efecto al cambiar de escenas
-    // ui->graphicsView->setGraphicsEffect(effectOpacity);
 
     //mapas de las escenas
     QPixmap initialBackground = QPixmap(":/public/images/Stage_2_KrustyLand-removebg-preview.png");
     initialBackground = initialBackground.scaled(scene->width(), scene->height(), Qt::IgnoreAspectRatio);
 
-    // krustyLandBackgroubd = krustyLandBackgroubd.scaled(800, 600, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     background = new QGraphicsPixmapItem(initialBackground);
-     // background->setPos((ui->graphicsView->width() - initialBackground .width()) / 2,
-     //                   (ui->graphicsView->height() - krustyLandBackgroubd.height()) / 2);
     scene->addItem(background);
+
     homeScreen();
 
     player = new Player(scene); //trabajar el jugador como objeto QGraphicsItem
     player->setFocus();
+
+    ui->graphicsView->setMouseTracking(true);
 }
 
 MainWindow::~MainWindow()
@@ -89,13 +86,11 @@ void MainWindow::changeScene(QString toScene){ // cambiar de escena
 }
 
 void MainWindow::homeScreen(){ // pantalla de inicio
-
     this->theme_chapter = new QMediaPlayer();
     this->theme_chapter->setSource(QUrl("qrc:/public/audios/main_theme.mp3"));
     this->theme_chapter->setAudioOutput(audio_output);
 
     // this->theme_chapter->play();
-
     QPushButton *button = new QPushButton("INICIAR"); // boton inicio
     QPushButton *buttonOut = new QPushButton("SALIR AL ESCRITORIO");
 
@@ -175,14 +170,10 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 
     //QGraphicsRectItem para definir muros de la escena
     //arriba a la izquierda
-    walls.append(scene->addRect(0, 160, 830, 10));
+    walls.append(scene->addRect(10, 160, 830, 10));
     walls.append(scene->addRect(870, 200, 660, 10));
-    walls.append(scene->addRect(0, 160, 50, 200));
-    walls.append(scene->addRect(0, 350, 450, 10));
-
-    QGraphicsRectItem* wallFall = scene->addRect(450, 350, 150, 10);
-    wallFall->setData(0, "wallFall");
-    walls.append(wallFall);
+    walls.append(scene->addRect(10, 160, 50, 200));
+    walls.append(scene->addRect(10, 350, 450, 10));
 
     //arriba a la derecha
     walls.append(scene->addRect(600, 350, 170, 10));
@@ -216,8 +207,13 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 
     for (int i = 0; i < walls.size(); ++i) {
         walls[i]->setBrush(Qt::darkGray);
+        if (walls[i]->data(0).toString() != "wallStarway"){
+               walls[i]->setData(0, "wall");
+        }
     }
 
+    QPointF position(70.0, 313.0);
+    player->setPositonPlayer(position);
     scene->addItem(player);
 }
 
@@ -230,7 +226,6 @@ void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de micro
 }
 
 //metodos protegidos
-
 void MainWindow::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
 
@@ -249,9 +244,7 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
     // }
 
     // ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-
 }
-
 
 //getters
 QGraphicsScene* MainWindow::getScene() const {

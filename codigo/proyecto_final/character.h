@@ -2,26 +2,33 @@
 #define CHARACTER_H
 
 #include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QObject>
+#include "physics.h"
+#include "projectile.h"
 
-class Character : public QObject, public QGraphicsItem
+class Character :  public QObject, public Physics, public QGraphicsItem
 {
+    Q_OBJECT
+
 public:
     Character();
 
-protected:
+private:
+    Projectile* projectile;
 
+protected:
     int heal;
     qreal speed;
     QPointF position;
 
     // void move();
     // void attack();
-
+    bool isCollidengWall(QGraphicsScene* scene, QRectF object, short direction);
+    void launchProyectile(QGraphicsScene* scene, qreal dx, qreal dy);
     void keyPressEvent(QKeyEvent* event) override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QRectF boundingRect() const override;
-
 
 };
 

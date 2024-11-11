@@ -12,13 +12,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     physics.cpp \
-    player.cpp
+    player.cpp \
+    projectile.cpp
 
 HEADERS += \
     character.h \
     mainwindow.h \
     physics.h \
-    player.h
+    player.h \
+    projectile.h
 
 FORMS += \
     mainwindow.ui

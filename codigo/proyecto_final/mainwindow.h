@@ -12,6 +12,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
 #include <QScreen>
+
 #include "player.h"
 
 QT_BEGIN_NAMESPACE
@@ -49,5 +50,6 @@ private:
     void microbialCivilization();
 
     Player* player;
+
 };
 #endif // MAINWINDOW_H
