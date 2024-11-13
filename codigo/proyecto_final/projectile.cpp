@@ -1,5 +1,7 @@
 #include "projectile.h"
 
+Projectile::Projectile(const Projectile& projectile){}
+
 Projectile::Projectile(qreal V0_, qreal angle_, qreal g_, qreal time_, qreal dx, qreal dy, QGraphicsScene *scene_)
     : v0(V0_), angle(angle_), g(g_), time(time_ ), dy(dy), dx(dx), scene(scene_)
 {

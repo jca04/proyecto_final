@@ -13,6 +13,7 @@ class Projectile: public QObject
 {
     Q_OBJECT
 public:
+    Projectile(const Projectile& projectile);
     Projectile(qreal V0_, qreal angle_, qreal g_, qreal time_, qreal dx, qreal dy, QGraphicsScene* scene_);
     void drawProjectile();
 

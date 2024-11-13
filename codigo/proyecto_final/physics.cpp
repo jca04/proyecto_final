@@ -20,7 +20,7 @@ void Physics::checkGravity(float &x, float &y){
     y0 = y;
 
     const float gravity = 9.8f;
-    const float deltaTime = 0.016;
+    const float deltaTime = 0.036;
 
     velocity += gravity * deltaTime;
     time += deltaTime;

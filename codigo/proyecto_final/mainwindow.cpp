@@ -212,7 +212,7 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
         }
     }
 
-    QPointF position(70.0, 313.0);
+    QPointF position(70.0, 300.0);
     player->setPositonPlayer(position);
     scene->addItem(player);
 }

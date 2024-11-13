@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <iostream>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
@@ -13,9 +14,7 @@ class Character :  public QObject, public Physics, public QGraphicsItem
 
 public:
     Character();
-
-private:
-    Projectile* projectile;
+    std::vector<Projectile>VProjectiles;
 
 protected:
     int heal;

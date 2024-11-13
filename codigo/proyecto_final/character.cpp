@@ -5,17 +5,10 @@ Character::Character() {}
 //metodo para heredar
 void Character::launchProyectile(QGraphicsScene* scene, qreal dx, qreal dy){
 
-    if (!projectile){
-        projectile = new Projectile(0.15, 20, 10, 0, dx, dy, scene);
-        projectile->drawProjectile();
-    }else{
-        projectile->drawProjectile();
-    }
+    Projectile pd(0.15, 20, 10, 0, dx, dy, scene);
+    VProjectiles.push_back(pd);
 }
 
-void Character::keyPressEvent(QKeyEvent* event){}
-void Character::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){}
-QRectF Character::boundingRect() const {}
 
 bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short direction){
     QGraphicsRectItem tempRectItem(object);
@@ -33,15 +26,19 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
 
                 switch (direction) {
                 case 1:
-                    if (object.x() + object.width() > itemRect.x()) return true;
+                    if (object.x() + object.width() > itemRect.x() && itemRect.y() <= object.y() && (itemRect.y() + itemRect.width()) >= (object.y() + object.height())) {
+                            return true;
+                    }
                     break;
                 case 2:
-                    if (object.x() < (itemRect.x() + itemRect.width())) {
+                    if (object.x() < (itemRect.x() + itemRect.width()) && itemRect.y() <= object.y() && (itemRect.y() + itemRect.height()) >= (object.y() + object.height()) ) {
+                        qDebug() << object.x() << "  " << itemRect.x() + itemRect.width();
                         return true;
                     }
                     break;
                 case 4:
-                    if ((object.y() + object.height() + 10) >= itemRect.y()) return true;
+
+                    if ((object.y() + object.height()) >= itemRect.y()) return true;
                     break;
                 default:
                     break;
@@ -52,3 +49,8 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
 
     return false;
 }
+
+//metodos heredados sobrecargados en player
+void Character::keyPressEvent(QKeyEvent* event){}
+void Character::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){}
+QRectF Character::boundingRect() const {}

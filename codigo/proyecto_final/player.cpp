@@ -9,8 +9,10 @@ Player::Player(QGraphicsScene *scene) : scene(scene) {
     // animationTimer->start(1000);
 
     fall = new QTimer(this);
-    connect(fall, &QTimer::timeout, this, &Player::fallMotion);
-    fall->start(300);
+    connect(fall, &QTimer::timeout, this, &Player::fallMotion); // timer para mantener el player pegado al suelo
+    fall->start(25);
+
+    Physics::isFalling = false;
 }
 
 void Player::fallMotion(){
@@ -19,30 +21,29 @@ void Player::fallMotion(){
 
     QRectF player(x, y, this->boundingRect().width() , this->boundingRect().height());
 
-    if (!isCollidengWall(scene, player, 4)){
+    if (isCollidengWall(scene, player, 4)) Physics::isFalling = false;
+    else Physics::isFalling = true;
 
+    if (Physics::isFalling){
         Physics::checkGravity(x, y);
-        setPos(this->x(), y);
-    }else{
-        setPos(this->x(), this->y() - 10);
+        setPos(x, y);
     }
 }
 
 void Player::keyPressEvent(QKeyEvent * event){
 
-
     QRectF player(this->x(), this->y(), this->boundingRect().width() , this->boundingRect().height());
     qDebug() << "tecla";
 
     switch (event->key()) {
-    case Qt::Key_Up:  // Mover hacia arriba
+    // case Qt::Key_Up:  // Mover hacia arriba
 
-        moveBy(0, -10);  // Mover en el eje Y
-        break;
+    //     moveBy(0, -10);  // Mover en el eje Y
+    //     break;
     case Qt::Key_Down:  // Mover hacia abajo
-        if (!isCollidengWall(scene, player, 4)){
-            moveBy(0, 1);
-        }
+        // if (!isCollidengWall(scene, player, 4)){
+        //     moveBy(0, 10);
+        // }
         break;
     case Qt::Key_Left:  // Mover hacia la izquierda
         if (!isCollidengWall(scene, player, 2)){
@@ -54,10 +55,13 @@ void Player::keyPressEvent(QKeyEvent * event){
             moveBy(10, 0);
         }
         break;
-    case Qt::Key_Space:
+    case Qt::Key_Space: //tecla para lanzar proyectiles (bombas)
 
         launchProyectile(scene, this->x(), this->y());
 
+        for (int i = 0; i < VProjectiles.size(); i++){
+            VProjectiles[i].drawProjectile();
+        }
         break;
     default:
         break;

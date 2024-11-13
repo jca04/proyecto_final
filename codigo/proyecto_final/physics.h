@@ -18,6 +18,8 @@ protected:
     void freeFall();
     void circularMotion();
 
+    bool isFalling;
+
 };
 
 #endif // PHYSICS_H
