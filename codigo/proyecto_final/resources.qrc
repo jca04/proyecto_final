@@ -3,5 +3,25 @@
         <file>public/audios/main_theme.mp3</file>
         <file>public/images/Stage_2_KrustyLand-removebg-preview.png</file>
         <file>public/images/evil_bart_map.png</file>
+        <file>public/images/bart_stop.png</file>
+        <file>public/images/bart_walks_1-removebg-preview.png</file>
+        <file>public/images/bart_walks_2-removebg-preview.png</file>
+        <file>public/images/bart_walks_3-removebg-preview.png</file>
+        <file>public/images/bart_walks_4-removebg-preview.png</file>
+        <file>public/images/bart_walks_5-removebg-preview.png</file>
+        <file>public/images/bart_walks_1_left.png</file>
+        <file>public/images/bart_walks_2_left.png</file>
+        <file>public/images/bart_walks_3_left.png</file>
+        <file>public/images/bart_walks_4_left.png</file>
+        <file>public/images/bart_walks_5_left.png</file>
+        <file>public/images/bart_stop_left.png</file>
+        <file>public/images/bart_figth_1_left.png</file>
+        <file>public/images/bart_figth_1_rigth.png</file>
+        <file>public/images/bart_figth_2_left.png</file>
+        <file>public/images/bart_figth_2_rigth.png</file>
+        <file>public/images/bart_figth_3_left.png</file>
+        <file>public/images/bart_figth_3_rigth.png</file>
+        <file>public/images/bart_figth_4_left.png</file>
+        <file>public/images/bart_figth_4_rigth.png</file>
     </qresource>
 </RCC>

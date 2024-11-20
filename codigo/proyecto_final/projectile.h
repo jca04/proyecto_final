@@ -30,7 +30,7 @@ private:
 
     QTimer* timer;
 
-    QGraphicsEllipseItem* sllipe = nullptr;
+    QGraphicsEllipseItem* ellipse;
 
 private slots:
     void updatePosition();

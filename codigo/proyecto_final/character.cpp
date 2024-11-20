@@ -37,7 +37,6 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
                     }
                     break;
                 case 4:
-
                     if ((object.y() + object.height()) >= itemRect.y()) return true;
                     break;
                 default:
@@ -50,7 +49,17 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
     return false;
 }
 
+void Character::attack() { // funcion para disminuir o aumentar vida
+
+
+}
+
 //metodos heredados sobrecargados en player
 void Character::keyPressEvent(QKeyEvent* event){}
 void Character::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){}
 QRectF Character::boundingRect() const {}
+
+Character::~Character(){
+
+}
+

@@ -28,5 +28,4 @@ void Physics::checkGravity(float &x, float &y){
     float newY = y0 + velocity * time - 0.5f * gravity * time * time;
 
     y = newY;
-
 }

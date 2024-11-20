@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     //configuraciones iniciales del graphicsview
     QSize screenSize = QGuiApplication::primaryScreen()->size();   //tamaño de mi pantalla
     ui->graphicsView->setFixedSize(screenSize.width(), screenSize.height());  //tamaño por defecto el QGraphicsView
-    ui->graphicsView->setBackgroundBrush(Qt::yellow);
+    ui->graphicsView->setStyleSheet("QGraphicsView { background-color: #34221E; }");
     ui->graphicsView->setFrameShape(QFrame::NoFrame);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform); // suavizar bordes de las imagenes
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll horizontal
@@ -55,26 +55,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::changeScene(QString toScene){ // cambiar de escena
-
-    // //configuracion de la animacion
-    // animation = new QPropertyAnimation(effectOpacity, "opacity");
-    // animation->setDuration(500);
-    // animation->setStartValue(1.0);
-    // animation->setEndValue(0.0);
-
-    // //señal de la animacion
-    // connect(animation, &QPropertyAnimation::finished, this,[=]{
-
-    //     scene->clear();
-    //     effectOpacity->setOpacity(1.0);
-
-    //     delete animation;
-    // });
-
-    // animation->start();
-    // this->scene->clear(); //limpiar la escena actual
-    scene->clear();
-
     QList<QGraphicsItem*> items = scene->items();
 
     foreach (QGraphicsItem* item, items) {
@@ -212,7 +192,7 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
         }
     }
 
-    QPointF position(70.0, 300.0);
+    QPointF position(70.0, 260.0);
     player->setPositonPlayer(position);
     scene->addItem(player);
 }
