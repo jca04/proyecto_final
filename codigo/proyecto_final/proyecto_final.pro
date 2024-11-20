@@ -41,6 +41,7 @@ DISTFILES += \
     public/images/evil_bart_map_top_left.png \
     public/images/genesis_tub.png \
     public/images/map_base_KrustyLand.png \
+    public/images/springfield.png \
     resources/audios/main_theme.mp3 \
     resources/images/Imagen_promocional_4F02.webp \
     resources/images/genesis_tub.png

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QComboBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -83,6 +84,7 @@ void MainWindow::changeScene(QString toScene){ // cambiar de escena
     }
 
     if (toScene == "CHAPTER_ONE") evilBrotherScene();
+    if (toScene == "CHAPTER_TWO") kodosAndKand();
 }
 
 void MainWindow::homeScreen(){ // pantalla de inicio
@@ -112,7 +114,7 @@ void MainWindow::homeScreen(){ // pantalla de inicio
         "QPushButton:pressed {"
         "   background-color: #1c5987;"
         "}"
-    );
+        );
 
     buttonOut->setStyleSheet(
         "QPushButton {"
@@ -129,10 +131,10 @@ void MainWindow::homeScreen(){ // pantalla de inicio
         "QPushButton:pressed {"
         "   background-color: #1c5987;"
         "}"
-    );
+        );
 
     proxy->setPos((ui->graphicsView->width() - button->width()) / 2, // posicionarlo en la mitad del a pantalla
-                (ui->graphicsView->height() - button->height()) / 2);
+                  (ui->graphicsView->height() - button->height()) / 2);
 
     proxyOut->setPos((ui->graphicsView->width() - buttonOut->width()) / 2,
                      (ui->graphicsView->height() - buttonOut->height() + button->height() + 80) / 2);
@@ -218,7 +220,16 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
+    QPixmap kodosAndKandMap = QPixmap("://public/images/springfield.png");
 
+    if (kodosAndKandMap.isNull()) {
+        qDebug() << "No se pudo cargar la imagen";
+    }
+
+    kodosAndKandMap = kodosAndKandMap.scaled(scene->width(), scene->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    background = new QGraphicsPixmapItem(kodosAndKandMap);
+    background->setPos(10, 0);
+    scene->addItem(background);
 }
 
 void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de microbios

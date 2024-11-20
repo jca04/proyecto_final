@@ -3,5 +3,6 @@
         <file>public/audios/main_theme.mp3</file>
         <file>public/images/Stage_2_KrustyLand-removebg-preview.png</file>
         <file>public/images/evil_bart_map.png</file>
+        <file>public/images/springfield.png</file>
     </qresource>
 </RCC>
