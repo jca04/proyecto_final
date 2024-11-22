@@ -23,5 +23,10 @@
         <file>public/images/bart_figth_3_rigth.png</file>
         <file>public/images/bart_figth_4_left.png</file>
         <file>public/images/bart_figth_4_rigth.png</file>
+        <file>public/images/map.png</file>
+        <file>public/images/bart_jumping_1_left.png</file>
+        <file>public/images/bart_jumping_1_rigth.png</file>
+        <file>public/images/bart_jumping_2_left.png</file>
+        <file>public/images/bart_jumping_2_rigth.png</file>
     </qresource>
 </RCC>

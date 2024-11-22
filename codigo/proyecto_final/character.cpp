@@ -37,6 +37,7 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
                     }
                     break;
                 case 4:
+                    qDebug() << "aqui";
                     if ((object.y() + object.height()) >= itemRect.y()) return true;
                     break;
                 default:

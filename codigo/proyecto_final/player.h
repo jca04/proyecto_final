@@ -13,7 +13,7 @@ class Player : public Character
 {
     Q_OBJECT
 public:
-    explicit Player(QGraphicsScene* scene = nullptr);
+    Player(QGraphicsScene* scene = nullptr, float x = 0.0, float y = 0.0);
 
     void setPositonPlayer(QPointF position);
 
@@ -29,11 +29,16 @@ private:
     QVector<QPixmap> walksLeft;
     QVector<QPixmap> fightRigth;
     QVector<QPixmap> fightLeft;
+    QVector<QPixmap> jumpingRigth;
+    QVector<QPixmap> jumpingLeft;
 
     //movimiento
     short actualSprite;
     short directionWalk;
+    bool isJumping;
 
+    float xPlayer;
+    float yPlayer;
 
     void fallMotion();
     void walkingPlayer();

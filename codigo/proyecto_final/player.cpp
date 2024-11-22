@@ -1,40 +1,45 @@
-#include "player.h"
+    #include "player.h"
 
-Player::Player(QGraphicsScene *scene) : scene(scene) {
+Player::Player(QGraphicsScene *scene, float x, float y) : scene(scene), xPlayer(x), yPlayer(y) {
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
 
     //sprites de bart caminando hacia la derecha;
-    walksRigth.append(QPixmap(":/public/images/bart_stop.png"));
-    walksRigth.append(QPixmap(":/public/images/bart_walks_1-removebg-preview.png"));
-    walksRigth.append(QPixmap(":/public/images/bart_walks_2-removebg-preview.png"));
-    walksRigth.append(QPixmap(":/public/images/bart_walks_2-removebg-preview.png"));
-    walksRigth.append(QPixmap(":/public/images/bart_walks_4-removebg-preview.png"));
-    walksRigth.append(QPixmap(":/public/images/bart_walks_5-removebg-preview.png"));
+    walksRigth.append(QPixmap(":/public/images/bart_stop.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksRigth.append(QPixmap(":/public/images/bart_walks_1-removebg-preview.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksRigth.append(QPixmap(":/public/images/bart_walks_2-removebg-preview.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksRigth.append(QPixmap(":/public/images/bart_walks_2-removebg-preview.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksRigth.append(QPixmap(":/public/images/bart_walks_4-removebg-preview.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksRigth.append(QPixmap(":/public/images/bart_walks_5-removebg-preview.png").scaled(70, 70, Qt::KeepAspectRatio));
 
     //sprites de bart camninado hacia la izquierda
-    walksLeft.append(QPixmap(":/public/images/bart_stop_left.png"));
-    walksLeft.append(QPixmap(":/public/images/bart_walks_1_left.png"));
-    walksLeft.append(QPixmap(":/public/images/bart_walks_2_left.png"));
-    walksLeft.append(QPixmap(":/public/images/bart_walks_3_left.png"));
-    walksLeft.append(QPixmap(":/public/images/bart_walks_4_left.png"));
-    walksLeft.append(QPixmap(":/public/images/bart_walks_5_left.png"));
+    walksLeft.append(QPixmap(":/public/images/bart_stop_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksLeft.append(QPixmap(":/public/images/bart_walks_1_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksLeft.append(QPixmap(":/public/images/bart_walks_2_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksLeft.append(QPixmap(":/public/images/bart_walks_3_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksLeft.append(QPixmap(":/public/images/bart_walks_4_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    walksLeft.append(QPixmap(":/public/images/bart_walks_5_left.png").scaled(70, 70, Qt::KeepAspectRatio));
 
     //sprites de bart peleando hacia la derecha
-    fightRigth.append(QPixmap(":/public/images/bart_figth_1_rigth.png"));
-    fightRigth.append(QPixmap(":/public/images/bart_figth_2_rigth.png"));
-    fightRigth.append(QPixmap(":/public/images/bart_figth_3_rigth.png"));
-    fightRigth.append(QPixmap(":/public/images/bart_figth_4_rigth.png"));
+    fightRigth.append(QPixmap(":/public/images/bart_figth_1_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightRigth.append(QPixmap(":/public/images/bart_figth_2_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightRigth.append(QPixmap(":/public/images/bart_figth_3_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightRigth.append(QPixmap(":/public/images/bart_figth_4_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
 
     //sprites de bart peleando hacia la izquierda
-    fightLeft.append(QPixmap(":/public/images/bart_figth_1_left.png"));
-    fightLeft.append(QPixmap(":/public/images/bart_figth_2_left.png"));
-    fightLeft.append(QPixmap(":/public/images/bart_figth_3_left.png"));
-    fightLeft.append(QPixmap(":/public/images/bart_figth_4_left.png"));
+    fightLeft.append(QPixmap(":/public/images/bart_figth_1_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightLeft.append(QPixmap(":/public/images/bart_figth_2_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightLeft.append(QPixmap(":/public/images/bart_figth_3_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    fightLeft.append(QPixmap(":/public/images/bart_figth_4_left.png").scaled(70, 70, Qt::KeepAspectRatio));
 
-    actualSprite = 0;
-    directionWalk = 1;
+    //sprites de bart saltando derecha
+    jumpingRigth.append(QPixmap(":/public/images/bart_jumping_1_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
+    jumpingRigth.append(QPixmap(":/public/images/bart_jumping_2_rigth.png").scaled(70, 70, Qt::KeepAspectRatio));
+
+    //sprites de bart saltando a la izquerda
+    jumpingLeft.append(QPixmap(":/public/images/bart_jumping_1_left.png").scaled(70, 70, Qt::KeepAspectRatio));
+    jumpingLeft.append(QPixmap(":/public/images/bart_jumping_2_left.png").scaled(70, 70, Qt::KeepAspectRatio));
 
     fall = new QTimer(this);
     walksTimeOut = new QTimer(this);
@@ -44,9 +49,13 @@ Player::Player(QGraphicsScene *scene) : scene(scene) {
     connect(walksTimeOut, &QTimer::timeout, this, &Player::walkingPlayer); // timer para caminar
     connect(figthTimeOut, &QTimer::timeout, this, &Player::attack);
 
-    fall->start(100);
+    fall->start(16);
     walksTimeOut->start(80);
     figthTimeOut->start(200);
+
+    actualSprite = 0;
+    directionWalk = 1;
+    isJumping = false;
 
     Character::isWalking = false;
     Character::indSpriteAttack = -1;
@@ -56,18 +65,16 @@ Player::Player(QGraphicsScene *scene) : scene(scene) {
 }
 
 void Player::fallMotion(){
-    // float x = this->x();
-    // float y = this->y();
+    if (isJumping){
+        float xdt = this->x();
+        float ydt = this->y();
 
-    // QRectF player(x, y, this->boundingRect().width() , this->boundingRect().height());
-
-    // if (isCollidengWall(scene, player, 4)) Physics::isFalling = false;
-    // else Physics::isFalling = true;
-
-    // if (Physics::isFalling){
-    //     Physics::checkGravity(x, y);
-    //     setPos(x, y);
-    // }
+        if (Physics::jumping(xdt, ydt, yPlayer, (directionWalk == 1 ? 60 : 135))){
+            isJumping = false;
+            Physics::time = 0.0;
+            return;
+        }else setPos(xdt, ydt);
+    }
 }
 
 void Player::keyPressEvent(QKeyEvent * event){
@@ -78,7 +85,9 @@ void Player::keyPressEvent(QKeyEvent * event){
     switch (event->key()) {
     case Qt::Key_Up:  // Mover hacia arriba
 
-        moveBy(0, -10);  // Mover en el eje Y
+
+
+        isJumping = true;
         break;
     case Qt::Key_Left:  // Mover hacia la izquierda
         if (!isCollidengWall(scene, player, 2)){
@@ -146,7 +155,18 @@ void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 
     painter->fillRect(boundingRect(), Qt::transparent);
 
-    if (Character::indSpriteAttack != -1){
+    //saltando
+    if (isJumping){
+        painter->drawPixmap(
+            0,
+            0,
+            (directionWalk == 1 ? jumpingRigth[1] : jumpingLeft[1])
+            );
+        return;
+    }
+
+
+    if (Character::indSpriteAttack != -1){ // cuando ataca
         if (directionWalk == 1){
             painter->drawPixmap(
                 0,
@@ -164,6 +184,7 @@ void Player::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         return;
     }
 
+    //caminar
     if (directionWalk != 1){
         painter->drawPixmap(
             0,
@@ -187,7 +208,7 @@ QRectF Player::boundingRect() const { // Método para definir el área interacti
                 0,
                 0,
                 fightRigth[Character::indSpriteAttack].width() + 200,
-                fightRigth[Character::indSpriteAttack].height() + 20
+                fightRigth[Character::indSpriteAttack].height()
             );
         }
 
@@ -195,7 +216,7 @@ QRectF Player::boundingRect() const { // Método para definir el área interacti
             0,
             0,
             fightLeft[Character::indSpriteAttack].width() + 100,
-            fightLeft[Character::indSpriteAttack].height() + 10
+            fightLeft[Character::indSpriteAttack].height()
         );
     }
 
@@ -205,7 +226,7 @@ QRectF Player::boundingRect() const { // Método para definir el área interacti
             0,
             0,
             walksLeft[actualSprite].width() + 100,
-            walksLeft[actualSprite].height() + 20
+            walksLeft[actualSprite].height()
             );
     }
 
@@ -213,7 +234,7 @@ QRectF Player::boundingRect() const { // Método para definir el área interacti
         0,
         0,
         walksRigth[actualSprite].width() + 100,
-        walksRigth[actualSprite].height() + 20
+        walksRigth[actualSprite].height()
         );
 }
 

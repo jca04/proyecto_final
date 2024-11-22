@@ -9,6 +9,7 @@ CONFIG += c++17
 
 SOURCES += \
     character.cpp \
+    enemy.cpp \
     main.cpp \
     mainwindow.cpp \
     physics.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     character.h \
+    enemy.h \
     mainwindow.h \
     physics.h \
     player.h \

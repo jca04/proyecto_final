@@ -15,17 +15,27 @@ void Physics::circularMotion(){
 
 }
 
-void Physics::checkGravity(float &x, float &y){
 
-    y0 = y;
 
-    const float gravity = 9.8f;
-    const float deltaTime = 0.036;
+bool Physics::jumping(float &x, float &y, float floor, float angle){
 
-    velocity += gravity * deltaTime;
-    time += deltaTime;
+    float vx = 5 * cos(angle * M_PI / 180);
+    float vy = 5 * sin(angle * M_PI / 180);
+    float vyCurrent = vy -g * time;
 
-    float newY = y0 + velocity * time - 0.5f * gravity * time * time;
+    x = x + vx * time;
+    y = y - (vy * time - 0.5f * g * time * time);
 
-    y = newY;
+    time += 0.056;
+
+    if (vyCurrent < 0.0){ // esta cayendo
+
+        if (abs(y - floor) < 2){
+            return true;
+        }
+    }
+
+    return false;
+
+
 }

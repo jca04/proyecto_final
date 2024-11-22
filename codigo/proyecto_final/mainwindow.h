@@ -14,6 +14,7 @@
 #include <QScreen>
 
 #include "player.h"
+#include "Enemy.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
