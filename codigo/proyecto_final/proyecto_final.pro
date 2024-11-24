@@ -12,6 +12,8 @@ SOURCES += \
     customtextitem.cpp \
     homero.cpp \
     kodosandkang.cpp \
+    enemy.cpp \
+    libs/functions.cpp \
     main.cpp \
     mainwindow.cpp \
     physics.cpp \
@@ -23,6 +25,8 @@ HEADERS += \
     customtextitem.h \
     homero.h \
     kodosandkang.h \
+    enemy.h \
+    libs/functions.h \
     mainwindow.h \
     physics.h \
     player.h \

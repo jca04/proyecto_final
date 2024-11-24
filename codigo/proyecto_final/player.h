@@ -9,11 +9,13 @@
 #include <QPainter>
 #include <QTimer>
 
+class Enemy;
+
 class Player : public Character
 {
     Q_OBJECT
 public:
-    explicit Player(QGraphicsScene* scene = nullptr);
+    Player(QGraphicsScene* scene = nullptr, float x = 0.0, float y = 0.0, QVector<Enemy*> enemies = {});
 
     void setPositonPlayer(QPointF position);
 
@@ -21,23 +23,28 @@ public:
 
 private:
     QGraphicsScene* scene;
+    QGraphicsPixmapItem* objectLaunch;
     QTimer* walksTimeOut;
     QTimer* figthTimeOut;
     QTimer* fall;
-
-    QVector<QPixmap> walksRigth;
-    QVector<QPixmap> walksLeft;
-    QVector<QPixmap> fightRigth;
-    QVector<QPixmap> fightLeft;
+    QTimer* launchTimer;
+    QVector<Enemy*> enemies;
 
     //movimiento
     short actualSprite;
     short directionWalk;
+    bool isJumping;
+
+    float xPlayer;
+    float yPlayer;
 
 
     void fallMotion();
     void walkingPlayer();
     void attack();
+    void launchObject();
+    void moveLaunchObject();
+
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;     // Método para manejar el evento de la tecla

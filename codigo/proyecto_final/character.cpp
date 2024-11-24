@@ -5,8 +5,7 @@ Character::Character() {}
 //metodo para heredar
 void Character::launchProyectile(QGraphicsScene* scene, qreal dx, qreal dy){
 
-    Projectile pd(0.15, 20, 10, 0, dx, dy, scene);
-    VProjectiles.push_back(pd);
+
 }
 
 
@@ -37,6 +36,7 @@ bool Character::isCollidengWall(QGraphicsScene *scene, QRectF object, short dire
                     }
                     break;
                 case 4:
+                    qDebug() << "aqui";
                     if ((object.y() + object.height()) >= itemRect.y()) return true;
                     break;
                 default:

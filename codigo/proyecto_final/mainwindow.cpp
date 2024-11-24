@@ -45,21 +45,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     homeScreen();
 
-    player = new Player(scene); //trabajar el jugador como objeto QGraphicsItem
-    player->setFocus();
-
     ui->graphicsView->setMouseTracking(true);
 }
 
-MainWindow::~MainWindow()
-{
-    delete scene;
-    delete theme_chapter;
-    delete audio_output;
-    // delete effectOpacity;
-    // delete animation;
-    delete ui;
-}
 
 void MainWindow::changeScene(QString toScene){ // cambiar de escena
     QList<QGraphicsItem*> items = scene->items();
@@ -177,8 +165,10 @@ void MainWindow::homeScreen(){ // pantalla de inicio
 
 //DISEÑO DEL CAPITULO UNO: EL HERMANO MALVADO DE BART
 void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
+    player = new Player(scene, 0.0, 238.0, enemies);
+    player->setFocus();
 
-    QPixmap mapEvilBart = QPixmap(":/public/images/evil_bart_map.png");
+    QPixmap mapEvilBart = QPixmap(":/public/images/map.png");
 
     if (mapEvilBart.isNull()){
         qDebug() << "No se pudo cargar el mapa";
@@ -190,52 +180,55 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
     scene->addItem(background);
 
     //QGraphicsRectItem para definir muros de la escena
-    //arriba a la izquierda
-    walls.append(scene->addRect(10, 160, 830, 10));
-    walls.append(scene->addRect(870, 200, 660, 10));
-    walls.append(scene->addRect(10, 160, 50, 200));
-    walls.append(scene->addRect(10, 350, 450, 10));
+   // walls.append(scene->addRect(45, 190, 830, 10));
+    walls.append(scene->addRect(60, 190, 30, 10));
+    walls.append(scene->addRect(90, 150, 10, 50));
+    walls.append(scene->addRect(90, 150, 150, 10));
+    walls.append(scene->addRect(240, 150, 10, 50));
+    walls.append(scene->addRect(240, 200, 110, 10));
+    walls.append(scene->addRect(340, 150, 10, 50));
+    walls.append(scene->addRect(350, 150, 335, 10));
+    walls.append(scene->addRect(685, 150, 10, 50));
+    walls.append(scene->addRect(685, 200, 150, 10));
+    walls.append(scene->addRect(835, 100, 10, 110));
+    walls.append(scene->addRect(45, 160, 20, 150));
+    walls.append(scene->addRect(870, 100, 660, 10));
+    walls.append(scene->addRect(1500, 100, 40, 200));
+    walls.append(scene->addRect(60, 307, 2000, 10));
 
-    //arriba a la derecha
-    walls.append(scene->addRect(600, 350, 170, 10));
-    walls.append(scene->addRect(770, 360, 20, 10));
-    walls.append(scene->addRect(790, 370, 20, 10));
-    walls.append(scene->addRect(810, 380, 20, 10));
-    walls.append(scene->addRect(820, 390, 700, 10));
-    walls.append(scene->addRect(790, 370, 20, 10));
+    walls.append(scene->addRect(60, 600, 10, 160));
+    walls.append(scene->addRect(70, 640, 30, 10));
+    walls.append(scene->addRect(100, 600, 10, 40));
+    walls.append(scene->addRect(100, 600, 180, 10));
+    walls.append(scene->addRect(280, 600, 10, 40));
+    walls.append(scene->addRect(290, 640, 100, 10));
+    walls.append(scene->addRect(390, 600, 10, 40));
+    walls.append(scene->addRect(400, 600, 380, 10));
+    walls.append(scene->addRect(780, 550, 110, 10));
+    walls.append(scene->addRect(890, 500, 10, 50));
+    walls.append(scene->addRect(890, 510, 210, 10));
+    walls.append(scene->addRect(1100, 500, 10, 50));
+    walls.append(scene->addRect(1100, 550, 440, 10));
+    walls.append(scene->addRect(1520, 550, 10, 210));
+    walls.append(scene->addRect(60, 745, 1600, 10));
 
-    //izquierda abajo
-    walls.append(scene->addRect(450, 360, 10, 100));
-    walls.append(scene->addRect(460, 420, 20, 10));
-    walls.append(scene->addRect(470, 420, 10, 290));
-    walls.append(scene->addRect(220, 700, 250, 10));
-    walls.append(scene->addRect(220, 710, 10, 120));
-    walls.append(scene->addRect(230, 825, 380, 10));
-    walls.append(scene->addRect(550, 360, 10, 330));
-
-    QGraphicsRectItem* wallUpStarway = scene->addRect(550, 690, 10, 140);
-    wallUpStarway->setData(0, "wallStarway");
-    walls.append(wallUpStarway);
-    walls.append(scene->addRect(610, 690, 10, 140));
-
-    //derecha abajo
-    walls.append(scene->addRect(790, 570, 700, 10));
-    walls.append(scene->addRect(790, 760, 50, 10));
-    walls.append(scene->addRect(840, 750, 20, 10));
-    walls.append(scene->addRect(860, 740, 20, 10));
-    walls.append(scene->addRect(870, 730, 20, 10));
-    walls.append(scene->addRect(880, 720, 640, 10));
 
     for (int i = 0; i < walls.size(); ++i) {
-        walls[i]->setBrush(Qt::darkGray);
-        if (walls[i]->data(0).toString() != "wallStarway"){
-               walls[i]->setData(0, "wall");
-        }
+        walls[i]->setBrush(Qt::transparent);
+        walls[i]->setData(0, "wall");
     }
 
-    QPointF position(70.0, 260.0);
+    QPointF position(70.0, 238.0);
     player->setPositonPlayer(position);
     scene->addItem(player);
+
+    //enemigos
+    enemies.append(new Enemy(scene ,"FLY_CIRCLE", player));
+
+    for (const auto& enemy: enemies){
+        enemy->setPosition(370.0, 208.0);
+        scene->addItem(enemy);
+    }
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
@@ -296,10 +289,6 @@ void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
     ui->graphicsView->setScene(scene);
 }
 
-void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de microbios
-
-}
-
 //metodos protegidos
 void MainWindow::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
@@ -326,3 +315,12 @@ QGraphicsScene* MainWindow::getScene() const {
     return this->scene;
 }
 
+MainWindow::~MainWindow()
+{
+    delete scene;
+    delete theme_chapter;
+    delete audio_output;
+    // delete effectOpacity;
+    // delete animation;
+    delete ui;
+}

@@ -3,29 +3,49 @@
 
 Physics::Physics() {}
 
-void Physics::parabolicMotion(){
+void Physics::parabolicMotion(float &x, float &y, float angle){
+    float vx = 8 * cos(angle * M_PI / 180);
+    float vy = 8 * sin(angle * M_PI / 180);
 
+    x = x + vx * time;
+    y = y - (vy * time - 0.5f * g * time * time);
+
+    time += 0.056;
 }
 
 void Physics::freeFall(){
 
 }
 
-void Physics::circularMotion(){
+void Physics::circularMotion(float radio, float period, float deltaTime,float &x, float &y){
+    double omega = (2 * M_PI) / period;
 
-}
-
-void Physics::checkGravity(float &x, float &y){
-
-    y0 = y;
-
-    const float gravity = 9.8f;
-    const float deltaTime = 0.036;
-
-    velocity += gravity * deltaTime;
     time += deltaTime;
 
-    float newY = y0 + velocity * time - 0.5f * gravity * time * time;
+    x = x + radio * cos(omega * time);
+    y = y + radio * sin(omega * time);
+}
 
-    y = newY;
+
+bool Physics::jumping(float &x, float &y, float floor, float angle){
+
+    float vx = 5 * cos(angle * M_PI / 180);
+    float vy = 5 * sin(angle * M_PI / 180);
+    float vyCurrent = vy -g * time;
+
+    x = x + vx * time;
+    y = y - (vy * time - 0.5f * g * time * time);
+
+    time += 0.056;
+
+    if (vyCurrent < 0.0){ // esta cayendo
+
+        if (abs(y - floor) < 2){
+            return true;
+        }
+    }
+
+    return false;
+
+
 }
