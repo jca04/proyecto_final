@@ -24,7 +24,6 @@
         <file>public/images/bart_figth_3_rigth.png</file>
         <file>public/images/bart_figth_4_left.png</file>
         <file>public/images/bart_figth_4_rigth.png</file>
-<<<<<<< HEAD
         <file>public/images/hom_walk_1.png</file>
         <file>public/images/hom_walk_2.png</file>
         <file>public/images/hom_walk_3.png</file>
@@ -39,7 +38,6 @@
         <file>public/images/kang_and_kodos.png</file>
         <file>public/images/hom_happy.png</file>
         <file>public/images/donut.png</file>
-=======
         <file>public/images/map.png</file>
         <file>public/images/bart_jumping_1_left.png</file>
         <file>public/images/bart_jumping_1_rigth.png</file>
@@ -60,6 +58,5 @@
         <file>public/images/bart_ball_launch_3.png</file>
         <file>public/images/bart_ball_launch_4.png</file>
         <file>public/images/bart_ball_launch_5.png</file>
->>>>>>> 9bab7783d752b8a0e079f6f0346637398f8b9a92
     </qresource>
 </RCC>
