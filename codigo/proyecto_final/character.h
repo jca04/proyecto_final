@@ -23,6 +23,16 @@ protected:
     QPointF position;
     short indSpriteAttack;
     bool isFigthing;
+    short isLaunchObject;
+
+    QVector<QPixmap> walksRigth;
+    QVector<QPixmap> walksLeft;
+    QVector<QPixmap> fightRigth;
+    QVector<QPixmap> fightLeft;
+    QVector<QPixmap> jumpingRigth;
+    QVector<QPixmap> jumpingLeft;
+    QVector<QPixmap> launchObjects;
+
 
     // void move();
     void attack();

@@ -38,21 +38,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     homeScreen();
 
-    player = new Player(scene, 0.0, 238.0); //trabajar el jugador como objeto QGraphicsItem
-    player->setFocus();
-
     ui->graphicsView->setMouseTracking(true);
 }
 
-MainWindow::~MainWindow()
-{
-    delete scene;
-    delete theme_chapter;
-    delete audio_output;
-    // delete effectOpacity;
-    // delete animation;
-    delete ui;
-}
 
 void MainWindow::changeScene(QString toScene){ // cambiar de escena
     QList<QGraphicsItem*> items = scene->items();
@@ -136,6 +124,8 @@ void MainWindow::homeScreen(){ // pantalla de inicio
 
 //DISEÑO DEL CAPITULO UNO: EL HERMANO MALVADO DE BART
 void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
+    player = new Player(scene, 0.0, 238.0, enemies);
+    player->setFocus();
 
     QPixmap mapEvilBart = QPixmap(":/public/images/map.png");
 
@@ -183,20 +173,24 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
 
 
     for (int i = 0; i < walls.size(); ++i) {
-        walls[i]->setBrush(Qt::darkGray);
+        walls[i]->setBrush(Qt::transparent);
         walls[i]->setData(0, "wall");
     }
 
     QPointF position(70.0, 238.0);
     player->setPositonPlayer(position);
     scene->addItem(player);
+
+    //enemigos
+    enemies.append(new Enemy(scene ,"FLY_CIRCLE", player));
+
+    for (const auto& enemy: enemies){
+        enemy->setPosition(370.0, 208.0);
+        scene->addItem(enemy);
+    }
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
-
-}
-
-void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de microbios
 
 }
 
@@ -226,3 +220,12 @@ QGraphicsScene* MainWindow::getScene() const {
     return this->scene;
 }
 
+MainWindow::~MainWindow()
+{
+    delete scene;
+    delete theme_chapter;
+    delete audio_output;
+    // delete effectOpacity;
+    // delete animation;
+    delete ui;
+}

@@ -12,6 +12,7 @@
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
 #include <QScreen>
+#include <QTimer>
 
 #include "player.h"
 #include "Enemy.h"
@@ -48,9 +49,8 @@ private:
     void homeScreen();
     void evilBrotherScene();
     void kodosAndKand();
-    void microbialCivilization();
 
     Player* player;
-
+    QVector<Enemy*> enemies;
 };
 #endif // MAINWINDOW_H

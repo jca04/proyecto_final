@@ -17,9 +17,9 @@ public:
 
 
 protected:
-    void parabolicMotion();
+    void parabolicMotion(float &x, float &y, float angle);
     void freeFall();
-    void circularMotion();
+    void circularMotion(float radio, float period, float deltaTime, float &x, float &y);
     void jumping();
 
     bool isFalling;

@@ -5,8 +5,7 @@ Character::Character() {}
 //metodo para heredar
 void Character::launchProyectile(QGraphicsScene* scene, qreal dx, qreal dy){
 
-    Projectile pd(0.15, 20, 10, 0, dx, dy, scene);
-    VProjectiles.push_back(pd);
+
 }
 
 

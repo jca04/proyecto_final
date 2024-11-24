@@ -28,5 +28,20 @@
         <file>public/images/bart_jumping_1_rigth.png</file>
         <file>public/images/bart_jumping_2_left.png</file>
         <file>public/images/bart_jumping_2_rigth.png</file>
+        <file>public/images/fly_demon_level1_left_1.png</file>
+        <file>public/images/fly_demon_level1_left_2.png</file>
+        <file>public/images/fly_demon_level1_left_3.png</file>
+        <file>public/images/fly_demon_level1_left_4.png</file>
+        <file>public/images/fly_demon_level1_rigth_1.png</file>
+        <file>public/images/fly_demon_level1_rigth_2.png</file>
+        <file>public/images/fly_demon_level1_rigth_3.png</file>
+        <file>public/images/fly_demon_level1_rigth_4.png</file>
+        <file>public/images/fly_demon_projectile_1.png</file>
+        <file>public/images/fly_demon_projectile_2.png</file>
+        <file>public/images/bart_ball_launch_1.png</file>
+        <file>public/images/bart_ball_launch_2.png</file>
+        <file>public/images/bart_ball_launch_3.png</file>
+        <file>public/images/bart_ball_launch_4.png</file>
+        <file>public/images/bart_ball_launch_5.png</file>
     </qresource>
 </RCC>
