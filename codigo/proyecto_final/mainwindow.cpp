@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "kodosandkang.h"
+#include "homero.h"
 #include <QComboBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -8,10 +10,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //homero = new Homero(scene);
+
+    //connect(homero, &Homero::returnToMainMenu, this, &MainWindow::homeScreen);
+
     //configuraciones iniciales del graphicsview
     QSize screenSize = QGuiApplication::primaryScreen()->size();   //tamaño de mi pantalla
     ui->graphicsView->setFixedSize(screenSize.width(), screenSize.height());  //tamaño por defecto el QGraphicsView
-    ui->graphicsView->setBackgroundBrush(Qt::yellow);
+    ui->graphicsView->setStyleSheet("QGraphicsView { background-color: #34221E; }");
     ui->graphicsView->setFrameShape(QFrame::NoFrame);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform); // suavizar bordes de las imagenes
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // inhabilitar scroll horizontal
@@ -56,26 +62,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::changeScene(QString toScene){ // cambiar de escena
-
-    // //configuracion de la animacion
-    // animation = new QPropertyAnimation(effectOpacity, "opacity");
-    // animation->setDuration(500);
-    // animation->setStartValue(1.0);
-    // animation->setEndValue(0.0);
-
-    // //señal de la animacion
-    // connect(animation, &QPropertyAnimation::finished, this,[=]{
-
-    //     scene->clear();
-    //     effectOpacity->setOpacity(1.0);
-
-    //     delete animation;
-    // });
-
-    // animation->start();
-    // this->scene->clear(); //limpiar la escena actual
-    scene->clear();
-
     QList<QGraphicsItem*> items = scene->items();
 
     foreach (QGraphicsItem* item, items) {
@@ -95,9 +81,11 @@ void MainWindow::homeScreen(){ // pantalla de inicio
     // this->theme_chapter->play();
     QPushButton *button = new QPushButton("INICIAR"); // boton inicio
     QPushButton *buttonOut = new QPushButton("SALIR AL ESCRITORIO");
+    QPushButton *kodosAndKangButton = new QPushButton("KODOS AND KANG");
 
     QGraphicsProxyWidget *proxy = scene->addWidget(button); //necesario para poder tener el boton en la escena
     QGraphicsProxyWidget *proxyOut = scene->addWidget(buttonOut);
+    QGraphicsProxyWidget *proxyKodosAndKang = scene->addWidget(kodosAndKangButton);
 
     button->setStyleSheet(
         "QPushButton {"
@@ -132,12 +120,31 @@ void MainWindow::homeScreen(){ // pantalla de inicio
         "   background-color: #1c5987;"
         "}"
         );
+    kodosAndKangButton->setStyleSheet(
+        "QPushButton {"
+        "   background-color: #3498db;"
+        "   color: white;"
+        "   border-radius: 10px;"
+        "   padding: 10px 20px;"
+        "   font-size: 16px;"
+        "   font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "   background-color: #2980b9;"
+        "}"
+        "QPushButton:pressed {"
+        "   background-color: #1c5987;"
+        "}"
+        );
 
     proxy->setPos((ui->graphicsView->width() - button->width()) / 2, // posicionarlo en la mitad del a pantalla
                   (ui->graphicsView->height() - button->height()) / 2);
 
     proxyOut->setPos((ui->graphicsView->width() - buttonOut->width()) / 2,
                      (ui->graphicsView->height() - buttonOut->height() + button->height() + 80) / 2);
+
+    proxyKodosAndKang->setPos((ui->graphicsView->width() - kodosAndKangButton->width()) / 2,
+                              (ui->graphicsView->height() - kodosAndKangButton->height() + 250) / 2);
 
     connect(button, &QPushButton::clicked, [this, proxy, proxyOut](){ // funcion lambda para ejecucuon del evento click del boton
         qDebug() << "boton clickeado";
@@ -153,6 +160,18 @@ void MainWindow::homeScreen(){ // pantalla de inicio
 
         scene->removeItem(proxy);
         scene->removeItem(proxyOut);
+    });
+
+    connect(kodosAndKangButton, &QPushButton::clicked, [this, proxy, proxyOut, proxyKodosAndKang]() {
+        qDebug() << "Kodos and Kang seleccionado";
+
+        // Elimina los elementos de la escena de inicio
+        scene->removeItem(proxy);
+        scene->removeItem(proxyOut);
+        scene->removeItem(proxyKodosAndKang);
+
+        // Cambiar a la escena de Kodos and Kang
+        changeScene("CHAPTER_TWO");
     });
 }
 
@@ -214,22 +233,67 @@ void MainWindow::evilBrotherScene(){ // capitulo uno: el hermano gemelo de bart
         }
     }
 
-    QPointF position(70.0, 300.0);
+    QPointF position(70.0, 260.0);
     player->setPositonPlayer(position);
     scene->addItem(player);
 }
 
 void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
-    QPixmap kodosAndKandMap = QPixmap("://public/images/springfield.png");
 
-    if (kodosAndKandMap.isNull()) {
-        qDebug() << "No se pudo cargar la imagen";
+    QList<QGraphicsItem*> items = scene->items();
+    foreach (QGraphicsItem* item, items) {
+        scene->removeItem(item);
+        delete item;
     }
 
-    kodosAndKandMap = kodosAndKandMap.scaled(scene->width(), scene->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    background = new QGraphicsPixmapItem(kodosAndKandMap);
-    background->setPos(10, 0);
-    scene->addItem(background);
+    delete scene;
+
+    // nueva escena para Kodos y Kang
+    scene = new QGraphicsScene(0, 0, ui->graphicsView->width(), ui->graphicsView->height());
+    scene->setSceneRect(0, 0, ui->graphicsView->width(), ui->graphicsView->height());
+
+    QPixmap KodosAndKangMap(":/public/images/springfield.png");
+    if (KodosAndKangMap.isNull()) {
+        qDebug() << "No se pudo cargar la imagen del mapa";
+    }
+
+    KodosAndKangMap = KodosAndKangMap.scaled(ui->graphicsView->width(), ui->graphicsView->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(KodosAndKangMap);
+    scene->addItem(backgroundItem);
+
+    int sceneWidth = scene->width();  // Ancho de la escena
+    int sceneHeight = scene->height();  // Alto de la escena
+
+    // Pared superior
+    walls.append(scene->addRect(0, 0, sceneWidth, 10));
+
+    // Pared inferior (movida 80 pixeles hacia arriba)
+    walls.append(scene->addRect(0, sceneHeight - 80 - 10, sceneWidth, 10));
+
+    // Pared izquierda
+    walls.append(scene->addRect(0, 0, 10, sceneHeight));
+
+    // Pared derecha
+    walls.append(scene->addRect(sceneWidth - 10, 0, 10, sceneHeight));
+
+    for (int i = 0; i < walls.size(); ++i) {
+        walls[i]->setBrush(Qt::NoBrush);
+        walls[i]->setPen(Qt::NoPen);
+        if (walls[i]->data(0).toString() != "wallStarway") {
+            walls[i]->setData(0, "wall");
+        }
+    }
+
+    Homero* homero = new Homero(scene);
+    homero->setWalls(walls);
+    scene->addItem(homero);
+
+    KodosAndKang* kodosAndKang = new KodosAndKang(scene, homero);
+    scene->addItem(kodosAndKang);
+    homero->setEnemigo(kodosAndKang);
+
+    ui->graphicsView->setScene(scene);
 }
 
 void MainWindow::microbialCivilization(){ //capitulo tres: civilizacion de microbios

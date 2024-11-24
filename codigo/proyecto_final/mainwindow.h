@@ -14,6 +14,7 @@
 #include <QScreen>
 
 #include "player.h"
+#include "homero.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -50,6 +51,8 @@ private:
     void microbialCivilization();
 
     Player* player;
+
+    Homero* homero;
 
 };
 #endif // MAINWINDOW_H

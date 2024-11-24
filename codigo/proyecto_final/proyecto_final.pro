@@ -9,6 +9,9 @@ CONFIG += c++17
 
 SOURCES += \
     character.cpp \
+    customtextitem.cpp \
+    homero.cpp \
+    kodosandkang.cpp \
     main.cpp \
     mainwindow.cpp \
     physics.cpp \
@@ -17,6 +20,9 @@ SOURCES += \
 
 HEADERS += \
     character.h \
+    customtextitem.h \
+    homero.h \
+    kodosandkang.h \
     mainwindow.h \
     physics.h \
     player.h \

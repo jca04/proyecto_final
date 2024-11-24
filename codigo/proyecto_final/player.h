@@ -17,16 +17,27 @@ public:
 
     void setPositonPlayer(QPointF position);
 
+    ~Player();
+
 private:
     QGraphicsScene* scene;
-    QTimer* animationTimer;
+    QTimer* walksTimeOut;
+    QTimer* figthTimeOut;
     QTimer* fall;
-    int idTimer;
+
+    QVector<QPixmap> walksRigth;
+    QVector<QPixmap> walksLeft;
+    QVector<QPixmap> fightRigth;
+    QVector<QPixmap> fightLeft;
+
+    //movimiento
+    short actualSprite;
+    short directionWalk;
+
 
     void fallMotion();
-
-private slots:
-     void updateAnimation();
+    void walkingPlayer();
+    void attack();
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;     // Método para manejar el evento de la tecla

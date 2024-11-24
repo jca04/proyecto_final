@@ -15,14 +15,17 @@ class Character :  public QObject, public Physics, public QGraphicsItem
 public:
     Character();
     std::vector<Projectile>VProjectiles;
-
+    ~Character();
 protected:
     int heal;
+    bool isWalking;
     qreal speed;
     QPointF position;
+    short indSpriteAttack;
+    bool isFigthing;
 
     // void move();
-    // void attack();
+    void attack();
     bool isCollidengWall(QGraphicsScene* scene, QRectF object, short direction);
     void launchProyectile(QGraphicsScene* scene, qreal dx, qreal dy);
     void keyPressEvent(QKeyEvent* event) override;
