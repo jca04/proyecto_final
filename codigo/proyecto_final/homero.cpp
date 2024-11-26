@@ -33,6 +33,11 @@ Homero::Homero(QGraphicsScene* scene) : actualSprite(0), walkDirection(1), isWal
     // Donut sprite
     donutSprite = QPixmap(":/public/images/donut.png").scaled(20, 20);
 
+    barraVida = new QGraphicsRectItem(0, 0, 100, 10);
+    barraVida->setBrush(Qt::green);
+    barraVida->setPos(x(), y() - 15);
+    scene->addItem(barraVida);
+
     // Timer para la animación
     animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &Homero::updateAnimation);
@@ -84,6 +89,14 @@ void Homero::lanzarObjeto() {
 
 void Homero::recibirDano(int cantidad) {
     life -= cantidad;
+
+
+    if (life < 0) {
+        life = 0;
+    }
+
+    actualizarBarraVida();
+
     if (life <= 0) {
         qDebug() << "Homero ha perdido toda su vida!";
         setPixmap(homeroDead);
@@ -271,4 +284,24 @@ void Homero::setEnemigo(KodosAndKang *enemigo) {
 
 void Homero::setWalls(const QVector<QGraphicsRectItem*>& walls) {
     this->walls = walls;
+}
+
+void Homero::actualizarBarraVida() {
+    // Ajustar el ancho de la barra según la vida restante
+    qreal porcentajeVida = static_cast<qreal>(life) / 100.0; // 100 es la vida máxima
+    qreal nuevoAncho = 100 * porcentajeVida;
+
+    barraVida->setRect(0, 0, nuevoAncho, 10);
+
+    // Cambiar color según la cantidad de vida
+    if (porcentajeVida > 0.6) {
+        barraVida->setBrush(Qt::green); // Vida alta
+    } else if (porcentajeVida > 0.3) {
+        barraVida->setBrush(Qt::yellow); // Vida media
+    } else {
+        barraVida->setBrush(Qt::red); // Vida baja
+    }
+
+    // Asegurarse de que la barra esté en la posición correcta
+    barraVida->setPos(x(), y() - 15);
 }

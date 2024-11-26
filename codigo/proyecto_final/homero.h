@@ -40,6 +40,7 @@ private:
     QPixmap homeroDead;
     QPixmap donutSprite;
     QGraphicsScene* scene;
+    QGraphicsRectItem* barraVida;
 
     short actualSprite;
     short walkDirection;
@@ -55,6 +56,7 @@ private:
     void atacarKodosAndKang(KodosAndKang* enemigo);
     void deadMenu();
     void restartGame();
+    void actualizarBarraVida();
 
 signals:
     void returnToMainMenu();

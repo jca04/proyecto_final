@@ -286,6 +286,8 @@ void MainWindow::kodosAndKand(){ // capitulo dos: kodos y kang
     scene->addItem(kodosAndKang);
     homero->setEnemigo(kodosAndKang);
 
+    connect(kodosAndKang, &KodosAndKang::derrotado, this, &MainWindow::mostrarMenu);
+
     ui->graphicsView->setScene(scene);
 }
 
@@ -314,6 +316,31 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
 QGraphicsScene* MainWindow::getScene() const {
     return this->scene;
 }
+
+void MainWindow::mostrarMenu(bool victoria, QGraphicsScene* scene) {
+    // Mostrar mensaje de victoria o derrota
+    QString mensaje = victoria ? "¡Has derrotado a Kodos y Kang!" : "¡Has sido derrotado!";
+    QGraphicsTextItem* mensajeFinal = new QGraphicsTextItem(mensaje);
+    mensajeFinal->setDefaultTextColor(Qt::white);
+    mensajeFinal->setFont(QFont("Arial", 30, QFont::Bold));
+    mensajeFinal->setPos(scene->width() / 2 - 150, scene->height() / 2 - 50);
+    scene->addItem(mensajeFinal);
+
+    // Botones para reiniciar o salir
+    QPushButton* botonReiniciar = new QPushButton("Reiniciar nivel");
+    QPushButton* botonMenu = new QPushButton("Menú principal");
+
+    QGraphicsProxyWidget* proxyReiniciar = scene->addWidget(botonReiniciar);
+    QGraphicsProxyWidget* proxyMenu = scene->addWidget(botonMenu);
+
+    proxyReiniciar->setPos(scene->width() / 2 - 50, scene->height() / 2 + 50);
+    proxyMenu->setPos(scene->width() / 2 - 50, scene->height() / 2 + 100);
+
+    connect(botonReiniciar, &QPushButton::clicked, [this]() {
+        kodosAndKand();
+    });
+}
+
 
 MainWindow::~MainWindow()
 {

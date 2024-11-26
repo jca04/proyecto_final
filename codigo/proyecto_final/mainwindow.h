@@ -36,6 +36,7 @@ protected:
     void changeScene(QString toScene);
     void resizeEvent(QResizeEvent* event) override;
 
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
@@ -50,6 +51,7 @@ private:
     void homeScreen();
     void evilBrotherScene();
     void kodosAndKand();
+    void mostrarMenu(bool victoria, QGraphicsScene* scene);
 
     Player* player;
 

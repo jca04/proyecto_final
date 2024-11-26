@@ -19,6 +19,11 @@ public:
     void recibirDano(int cantidad);
     void lanzarLaser();
 
+signals:
+    void regresarAlMenuPrincipal();
+    void reiniciarNivel();
+    void derrotado(bool victoria, QGraphicsScene* scene);
+
 private slots:
     void mover();
 
@@ -32,6 +37,8 @@ private:
     double tiempo;
     QPixmap kodosAndKangSprite;
     QPixmap happyHomero;
+    QGraphicsRectItem* barraVida;
+    void actualizarBarraVida();
 };
 
 #endif // KODOSANDKANG_H

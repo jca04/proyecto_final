@@ -2,6 +2,7 @@
 #include "homero.h"
 #include <cmath>
 #include <QPointF>
+#include <QPushButton>
 
 KodosAndKang::KodosAndKang(QGraphicsScene* scene, Homero* homero)
     : vida(100), scene(scene), homero(homero), direccionY(1), tiempo(0) {
@@ -17,6 +18,11 @@ KodosAndKang::KodosAndKang(QGraphicsScene* scene, Homero* homero)
 
     setPixmap(kodosAndKangSprite);
     setPos(500, 10);
+
+    barraVida = new QGraphicsRectItem(0, 0, 100, 10);
+    barraVida->setBrush(Qt::green);
+    barraVida->setPos(x(), y() - 15);
+    scene->addItem(barraVida);
 
     //setRect(0, 0, 100, 50); // Representación inicial como un rectángulo
     //setBrush(Qt::green);
@@ -38,6 +44,8 @@ void KodosAndKang::mover() {
     tiempo += 0.1;
     qreal nuevaY = 200 + 50 * sin(tiempo);
     setY(nuevaY);
+
+    barraVida->setPos(x(), y() - 15);
 }
 
 void KodosAndKang::lanzarLaser() {
@@ -64,7 +72,7 @@ void KodosAndKang::lanzarLaser() {
         laser->moveBy(velocidadX, velocidadY);
 
         if (homero->collidesWithItem(laser)) {
-            homero->recibirDano(50);
+            homero->recibirDano(5);
             delete laser;
             laserTimer->stop();
             laserTimer->deleteLater();
@@ -81,10 +89,42 @@ void KodosAndKang::lanzarLaser() {
 }
 
 void KodosAndKang::recibirDano(int cantidad) {
+
+    if (vida <= 0) return;
+
     vida -= cantidad;
     if (vida <= 0) {
         qDebug() << "KodosAndKang han sido derrotados!";
-        scene->removeItem(this); // Eliminar de la escena
-        delete this;
+
+        // Detener los temporizadores antes de eliminar los objetos
+        movimientoTimer->stop();
+        ataqueTimer->stop();
+
+        // Eliminar barra de vida de la escena
+        scene->removeItem(barraVida);
+        delete barraVida;
+        barraVida = nullptr; // Asegúrate de no usar un puntero colgado
+
+        // Eliminar este objeto (KodosAndKang) de la escena
+        scene->removeItem(this);
+        //delete this; // Eliminar el objeto completamente
+
+        emit derrotado(true, scene);
+    }
+    actualizarBarraVida();
+}
+
+void KodosAndKang::actualizarBarraVida() {
+    if (barraVida) {
+        qreal nuevoAncho = (vida / 100.0) * 100;
+        barraVida->setRect(0, 0, nuevoAncho, 10);
+
+        if (vida > 50) {
+            barraVida->setBrush(Qt::green);
+        } else  if (vida > 25) {
+            barraVida->setBrush(Qt::yellow);
+        } else {
+            barraVida->setBrush(Qt::red);
+        }
     }
 }
